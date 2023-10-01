@@ -106,7 +106,7 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
             {
               $set: {
                 contract_address: contractAddress,
-                minter_address: ownerAddress,
+                owner_address: ownerAddress,
                 name: new TextDecoder().decode(params.name),
                 symbol: new TextDecoder().decode(params.symbol),
                 base_uri: new TextDecoder().decode(params.baseUri),
