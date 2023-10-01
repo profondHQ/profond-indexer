@@ -10,7 +10,8 @@ import * as psp34_inkv4 from "./abi/psp34_inkv4";
 import * as psp22 from "./abi/psp22";
 import { MongoClient, Db, Decimal128 } from "mongodb";
 
-// Shibuya
+// Shibuya Details
+const chainName = "shibuya"
 const psp22CodeHash =
   "0xf052b1c1026689919114f8793cf965d335eccf16799335b447793ba16682d8c1";
 const psp34CodeHash =
@@ -21,7 +22,7 @@ const SS58_PREFIX = ss58.decode(CONTRACT_ADDRESS_SS58).prefix;
 
 const processor = new SubstrateBatchProcessor()
   .setDataSource({
-    archive: lookupArchive("shibuya", {
+    archive: lookupArchive(chainName, {
       release: "FireSquid",
       type: "Substrate",
     }),
@@ -71,8 +72,8 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
               $set: {
                 contract_address: contractAddress,
                 minter_address: ownerAddress,
-                name: params.name,
-                symbol: params.symbol,
+                name: new TextDecoder().decode(params.name),
+                symbol: new TextDecoder().decode(params.symbol),
                 decimals: params.decimals,
                 total_supply: Decimal128.fromString(
                   params.totalSupply.toString()
@@ -80,6 +81,7 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
                 is_pausable: params.isPausable,
                 is_mintable: params.isMintable,
                 is_burnable: params.isBurnable,
+                chain: chainName,
               },
             },
             {
@@ -105,16 +107,17 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
               $set: {
                 contract_address: contractAddress,
                 owner_address: ownerAddress,
-                name: params.name,
-                symbol: params.symbol,
-                base_uri: params.baseUri,
+                name: new TextDecoder().decode(params.name),
+                symbol: new TextDecoder().decode(params.symbol),
+                base_uri: new TextDecoder().decode(params.baseUri),
                 total_supply: params.maxSupply,
                 price_per_mint: params.pricePerMint,
                 public_sale_start_at: params.publicSaleStartAt,
                 public_sale_end_at: params.publicSaleEndAt,
                 launchpad_fee: params.launchpadFee,
-                project_treasury: params.projectTreasury,
-                launchpad_treasury: params.launchpadTreasury,
+                project_treasury: new TextDecoder().decode(params.projectTreasury),
+                launchpad_treasury: new TextDecoder().decode(params.launchpadTreasury),
+                chain: chainName,
               },
             },
             {
