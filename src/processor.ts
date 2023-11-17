@@ -76,6 +76,7 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
             {
               $set: {
                 max_supply: Decimal128.fromString(event.maxSupply.toString()),
+                bought_supply: Decimal128.fromString('0'),
                 sale_price: Decimal128.fromString(event.salePrice.toString()),
                 start_at: event.startAt,
                 end_at: event.endAt,
@@ -93,6 +94,17 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
             receiver_address: event.receiverAddress,
             updated_at: new Date().getTime(),
           });
+
+          await db.collection("coins").updateOne(
+            {
+              contract_address: contractAddress,
+            },
+            {
+              $inc: {
+                bought_supply: Decimal128.fromString(event.amount.toString()),
+              },
+            }
+          );
         }
       } else if (item.name === "Contracts.Instantiated") {
         const codeHash = item?.event?.call?.args.codeHash;
