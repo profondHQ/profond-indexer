@@ -11,7 +11,7 @@ import * as psp22 from "./abi/psp22";
 import { MongoClient, Db, Decimal128 } from "mongodb";
 
 // Shibuya Details
-const chainName = "shibuya"
+const chainName = "shibuya";
 const psp22CodeHash =
   "0xad2d9d62321056956d6064f2da683b0cfdd250633f7a9064d09a8d1dbda23734";
 const psp34CodeHash =
@@ -28,7 +28,8 @@ const processor = new SubstrateBatchProcessor()
     }),
   })
   .setBlockRange({ from: 4654321 }) // deployed block height on shibuya
-  .addEvent("Contracts.Instantiated");
+  .addEvent("Contracts.Instantiated")
+  .addEvent("Contracts.ContractEmitted");
 
 type Item = BatchProcessorItem<typeof processor>;
 type Ctx = BatchContext<Store, Item>;
@@ -53,13 +54,53 @@ function addressEncoder(hexAddress: string): string {
 const processBlocks = async (ctx: Ctx, db: Db) => {
   for (const block of ctx.blocks) {
     for (const item of block.items) {
-      if (item.name === "Contracts.Instantiated") {
+      if (item.name === "Contracts.ContractEmitted") {
+        let event;
+        let contractAddress = ss58
+          .codec(SS58_PREFIX)
+          .encode(
+            Buffer.from(item.event.args.contract.replace("0x", ""), "hex")
+          );
+        try {
+          event = psp22.decodeEvent(item.event.args.data);
+        } catch {
+          continue;
+        }
+        if (event.__kind === "SetSaleOptions") {
+          console.log(`[+] SetSaleOptions params`);
+          console.log(event);
+          await db.collection("coins").updateOne(
+            {
+              contract_address: contractAddress,
+            },
+            {
+              $set: {
+                max_supply: event.maxSupply,
+                sale_price: event.salePrice,
+                start_at: event.startAt,
+                end_at: event.endAt,
+                updated_at: new Date().getTime(),
+              },
+            }
+          );
+        } else if (event.__kind === "TokenBought") {
+          console.log(`[+] TokenBought params`);
+          console.log(event);
+
+          await db.collection("coin_sales").insertOne({
+            contract_address: contractAddress,
+            amount: event.amount,
+            receiver_address: event.receiverAddress,
+            updated_at: new Date().getTime(),
+          });
+        }
+      } else if (item.name === "Contracts.Instantiated") {
         const codeHash = item?.event?.call?.args.codeHash;
         if (codeHash === psp22CodeHash) {
           const params = psp22.decodeConstructor(item?.event?.call?.args.data);
           const ownerAddress = addressEncoder(item.event.args.deployer);
           const contractAddress = addressEncoder(item.event.args.contract);
-          console.log(`[+] params`);
+          console.log(`[+] PSP22 Contracts instantiated params`);
           console.log(params);
           console.log(`[+] ownerAddress ${ownerAddress}`);
           console.log(`[+] contractAddress ${contractAddress}`);
@@ -95,7 +136,7 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
           );
           const ownerAddress = addressEncoder(item.event.args.deployer);
           const contractAddress = addressEncoder(item.event.args.contract);
-          console.log(`[+] params`);
+          console.log(`[+] PSP34 Contract instantiated params`);
           console.log(params);
           console.log(`[+] ownerAddress ${ownerAddress}`);
           console.log(`[+] contractAddress ${contractAddress}`);
@@ -116,8 +157,12 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
                 public_sale_start_at: params.publicSaleStartAt,
                 public_sale_end_at: params.publicSaleEndAt,
                 launchpad_fee: params.launchpadFee,
-                project_treasury: new TextDecoder().decode(params.projectTreasury),
-                launchpad_treasury: new TextDecoder().decode(params.launchpadTreasury),
+                project_treasury: new TextDecoder().decode(
+                  params.projectTreasury
+                ),
+                launchpad_treasury: new TextDecoder().decode(
+                  params.launchpadTreasury
+                ),
                 chain: chainName,
               },
             },
