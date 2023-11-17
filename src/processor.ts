@@ -75,8 +75,8 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
             },
             {
               $set: {
-                max_supply: event.maxSupply,
-                sale_price: event.salePrice,
+                max_supply: Decimal128.fromString(event.maxSupply.toString()),
+                sale_price: Decimal128.fromString(event.salePrice.toString()),
                 start_at: event.startAt,
                 end_at: event.endAt,
                 updated_at: new Date().getTime(),
@@ -89,7 +89,7 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
 
           await db.collection("coin_sales").insertOne({
             contract_address: contractAddress,
-            amount: event.amount,
+            amount: Decimal128.fromString(event.amount.toString()),
             receiver_address: event.receiverAddress,
             updated_at: new Date().getTime(),
           });
