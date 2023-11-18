@@ -129,7 +129,7 @@ const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
               contractAddress,
               (event.amount / BigInt(10 ** coin?.decimals)).toString(),
               "buy",
-              1.0 / coin?.sale_rate.$numberDecimal,
+              1 / coin?.sale_rate,
               chainName,
             ]
           );
