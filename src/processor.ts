@@ -13,7 +13,7 @@ import { MongoClient, Db, Decimal128 } from "mongodb";
 // Shibuya Details
 const chainName = "shibuya";
 const psp22CodeHash =
-  "0xad2d9d62321056956d6064f2da683b0cfdd250633f7a9064d09a8d1dbda23734";
+  "0x0aedeeccb1ce02c852cc0aa2b78d26837d464fa93857123fd726ca52a9a6b364";
 const psp34CodeHash =
   "0x23e2ae0aa98a1e52a6d6d30fcc1ce713bee5425c26725e6c802b2737ee88fa18";
 
@@ -76,8 +76,8 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
             {
               $set: {
                 max_supply: Decimal128.fromString(event.maxSupply.toString()),
-                bought_supply: Decimal128.fromString('0'),
-                sale_price: Decimal128.fromString(event.salePrice.toString()),
+                bought_supply: Decimal128.fromString("0"),
+                sale_rate: Decimal128.fromString(event.saleRate.toString()),
                 start_at: event.startAt,
                 end_at: event.endAt,
                 updated_at: new Date().getTime(),
