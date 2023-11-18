@@ -9,6 +9,7 @@ import { Store, TypeormDatabase } from "@subsquid/typeorm-store";
 import * as psp34_inkv4 from "./abi/psp34_inkv4";
 import * as psp22 from "./abi/psp22";
 import { MongoClient, Db, Decimal128 } from "mongodb";
+import { Pool } from "pg";
 
 // Shibuya Details
 const chainName = "shibuya";
@@ -39,10 +40,15 @@ const main = async () => {
     process.env.DB
   );
 
+  const analyticDbPool = await Pool({
+    connectionString: process.env.PG_CONNECTION_STRING,
+  });
+
   processor.run(new TypeormDatabase(), async (ctx) => {
-    processBlocks(ctx, db);
+    processBlocks(ctx, db, analyticDbPool);
   });
 };
+
 main();
 
 function addressEncoder(hexAddress: string): string {
@@ -51,16 +57,12 @@ function addressEncoder(hexAddress: string): string {
     .encode(Buffer.from(hexAddress.replace("0x", ""), "hex"));
 }
 
-const processBlocks = async (ctx: Ctx, db: Db) => {
+const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
   for (const block of ctx.blocks) {
     for (const item of block.items) {
       if (item.name === "Contracts.ContractEmitted") {
         let event;
-        let contractAddress = ss58
-          .codec(SS58_PREFIX)
-          .encode(
-            Buffer.from(item.event.args.contract.replace("0x", ""), "hex")
-          );
+        let contractAddress = addressEncoder(item.event.args.contract);
         try {
           event = psp22.decodeEvent(item.event.args.data);
         } catch {
@@ -88,11 +90,16 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
           console.log(`[+] TokenBought params`);
           console.log(event);
 
+          const receiverAddress = ss58
+            .codec(SS58_PREFIX)
+            .encode(event.receiverAddress);
+          const updatedAt = new Date().getTime();
+
           await db.collection("coin_sales").insertOne({
             contract_address: contractAddress,
             amount: Decimal128.fromString(event.amount.toString()),
-            receiver_address: event.receiverAddress,
-            updated_at: new Date().getTime(),
+            receiver_address: receiverAddress,
+            updated_at: updatedAt,
           });
 
           await db.collection("coins").updateOne(
@@ -104,6 +111,27 @@ const processBlocks = async (ctx: Ctx, db: Db) => {
                 bought_supply: Decimal128.fromString(event.amount.toString()),
               },
             }
+          );
+
+          const coin = await db
+            .collection("coins")
+            .findOne({ contract_address: contractAddress });
+
+          await analyticDbPool.query(
+            `INSERT INTO 
+                transactions(wallet_address, timestamp, coin_address, smart_contract_coin, quantity, action, price, chain)
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            `,
+            [
+              receiverAddress,
+              updatedAt,
+              contractAddress,
+              contractAddress,
+              (event.amount / BigInt(10 ** coin?.decimals)).toString(),
+              "buy",
+              1.0 / coin?.sale_rate.$numberDecimal,
+              chainName,
+            ]
           );
         }
       } else if (item.name === "Contracts.Instantiated") {
