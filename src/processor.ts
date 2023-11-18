@@ -40,7 +40,7 @@ const main = async () => {
     process.env.DB
   );
 
-  const analyticDbPool = await Pool({
+  const analyticDbPool = new Pool({
     connectionString: process.env.PG_CONNECTION_STRING,
   });
 
