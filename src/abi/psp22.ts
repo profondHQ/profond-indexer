@@ -2,7 +2,7 @@ import {Abi, encodeCall, decodeResult} from "@subsquid/ink-abi"
 
 export const metadata = {
   "source": {
-    "hash": "0xf052b1c1026689919114f8793cf965d335eccf16799335b447793ba16682d8c1",
+    "hash": "0x0aedeeccb1ce02c852cc0aa2b78d26837d464fa93857123fd726ca52a9a6b364",
     "language": "ink! 4.3.0",
     "compiler": "rustc 1.70.0-nightly",
     "build_info": {
@@ -27,7 +27,7 @@ export const metadata = {
       {
         "args": [
           {
-            "label": "total_supply",
+            "label": "initial_supply",
             "type": {
               "displayName": [
                 "Balance"
@@ -41,7 +41,7 @@ export const metadata = {
               "displayName": [
                 "Option"
               ],
-              "type": 7
+              "type": 8
             }
           },
           {
@@ -50,7 +50,7 @@ export const metadata = {
               "displayName": [
                 "Option"
               ],
-              "type": 7
+              "type": 8
             }
           },
           {
@@ -88,6 +88,15 @@ export const metadata = {
               ],
               "type": 4
             }
+          },
+          {
+            "label": "is_sale",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 4
+            }
           }
         ],
         "default": false,
@@ -99,7 +108,7 @@ export const metadata = {
             "ink_primitives",
             "ConstructorResult"
           ],
-          "type": 8
+          "type": 9
         },
         "selector": "0x9bae9d5e"
       }
@@ -122,37 +131,313 @@ export const metadata = {
         "displayName": [
           "BlockNumber"
         ],
-        "type": 19
+        "type": 25
       },
       "chainExtension": {
         "displayName": [
           "ChainExtension"
         ],
-        "type": 20
+        "type": 26
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 17
+        "type": 24
       },
       "maxEventTopics": 4,
       "timestamp": {
         "displayName": [
           "Timestamp"
         ],
-        "type": 18
+        "type": 7
       }
     },
-    "events": [],
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "sale_rate",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "max_supply",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "start_at",
+            "type": {
+              "displayName": [
+                "Timestamp"
+              ],
+              "type": 7
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "end_at",
+            "type": {
+              "displayName": [
+                "Timestamp"
+              ],
+              "type": 7
+            }
+          }
+        ],
+        "docs": [],
+        "label": "SetSaleOptions"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "receiver_address",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "amount",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "TokenBought"
+      }
+    ],
     "lang_error": {
       "displayName": [
         "ink",
         "LangError"
       ],
-      "type": 9
+      "type": 10
     },
     "messages": [
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_is_sale",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 11
+        },
+        "selector": "0x8c66749f"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_is_pausable",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 11
+        },
+        "selector": "0xc64ffeb2"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_is_mintable",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 11
+        },
+        "selector": "0x61234c15"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_is_burnable",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 11
+        },
+        "selector": "0xd0e5ffcd"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_sale_rate",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0xf14df3d6"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_start_at",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 16
+        },
+        "selector": "0x48b8cae5"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_end_at",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 16
+        },
+        "selector": "0x21ec4ab8"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_max_supply",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0x62032e0e"
+      },
+      {
+        "args": [
+          {
+            "label": "sale_rate",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "max_supply",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "start_at",
+            "type": {
+              "displayName": [
+                "Timestamp"
+              ],
+              "type": 7
+            }
+          },
+          {
+            "label": "end_at",
+            "type": {
+              "displayName": [
+                "Timestamp"
+              ],
+              "type": 7
+            }
+          }
+        ],
+        "default": false,
+        "docs": [],
+        "label": "set_sale_options",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 18
+        },
+        "selector": "0xce1a7031"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "buy",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0x15d62801"
+      },
       {
         "args": [],
         "default": false,
@@ -165,7 +450,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 10
+          "type": 18
         },
         "selector": "0x300f90c8"
       },
@@ -200,7 +485,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 10
+          "type": 18
         },
         "selector": "0x1d2f13c5"
       },
@@ -226,56 +511,9 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 10
+          "type": 18
         },
         "selector": "0xb1efc17b"
-      },
-      {
-        "args": [
-          {
-            "label": "spender",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "IncreaseAllowanceInput1"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "label": "delta_value",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "IncreaseAllowanceInput2"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " Atomically increases the allowance granted to `spender` by the caller.",
-          "",
-          " An `Approval` event is emitted.",
-          "",
-          " # Errors",
-          "",
-          " Returns `ZeroSenderAddress` error if sender's address is zero.",
-          "",
-          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
-        ],
-        "label": "PSP22::increase_allowance",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 10
-        },
-        "selector": "0x96d6b57a"
       },
       {
         "args": [
@@ -334,59 +572,9 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 10
+          "type": 18
         },
         "selector": "0xdb20f9f5"
-      },
-      {
-        "args": [
-          {
-            "label": "spender",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "ApproveInput1"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "label": "value",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "ApproveInput2"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " Allows `spender` to withdraw from the caller's account multiple times, up to",
-          " the `value` amount.",
-          "",
-          " If this function is called again it overwrites the current allowance with `value`.",
-          "",
-          " An `Approval` event is emitted.",
-          "",
-          " # Errors",
-          "",
-          " Returns `ZeroSenderAddress` error if sender's address is zero.",
-          "",
-          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
-        ],
-        "label": "PSP22::approve",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 10
-        },
-        "selector": "0xb20f1bbd"
       },
       {
         "args": [],
@@ -402,7 +590,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 13
+          "type": 20
         },
         "selector": "0x162df8c2"
       },
@@ -443,90 +631,9 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 13
+          "type": 20
         },
         "selector": "0x4d47d921"
-      },
-      {
-        "args": [
-          {
-            "label": "spender",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "DecreaseAllowanceInput1"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "label": "delta_value",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "DecreaseAllowanceInput2"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " Atomically decreases the allowance granted to `spender` by the caller.",
-          "",
-          " An `Approval` event is emitted.",
-          "",
-          " # Errors",
-          "",
-          " Returns `InsufficientAllowance` error if there are not enough tokens allowed",
-          " by owner for `spender`.",
-          "",
-          " Returns `ZeroSenderAddress` error if sender's address is zero.",
-          "",
-          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
-        ],
-        "label": "PSP22::decrease_allowance",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 10
-        },
-        "selector": "0xfecb57d5"
-      },
-      {
-        "args": [
-          {
-            "label": "owner",
-            "type": {
-              "displayName": [
-                "psp22_external",
-                "BalanceOfInput1"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "default": false,
-        "docs": [
-          " Returns the account Balance for the specified `owner`.",
-          "",
-          " Returns `0` if the account is non-existent."
-        ],
-        "label": "PSP22::balance_of",
-        "mutates": false,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 13
-        },
-        "selector": "0x6568382f"
       },
       {
         "args": [
@@ -601,9 +708,187 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 10
+          "type": 18
         },
         "selector": "0x54b3c76e"
+      },
+      {
+        "args": [
+          {
+            "label": "spender",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "DecreaseAllowanceInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "delta_value",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "DecreaseAllowanceInput2"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Atomically decreases the allowance granted to `spender` by the caller.",
+          "",
+          " An `Approval` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns `InsufficientAllowance` error if there are not enough tokens allowed",
+          " by owner for `spender`.",
+          "",
+          " Returns `ZeroSenderAddress` error if sender's address is zero.",
+          "",
+          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
+        ],
+        "label": "PSP22::decrease_allowance",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 18
+        },
+        "selector": "0xfecb57d5"
+      },
+      {
+        "args": [
+          {
+            "label": "spender",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "IncreaseAllowanceInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "delta_value",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "IncreaseAllowanceInput2"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Atomically increases the allowance granted to `spender` by the caller.",
+          "",
+          " An `Approval` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns `ZeroSenderAddress` error if sender's address is zero.",
+          "",
+          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
+        ],
+        "label": "PSP22::increase_allowance",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 18
+        },
+        "selector": "0x96d6b57a"
+      },
+      {
+        "args": [
+          {
+            "label": "owner",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "BalanceOfInput1"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Returns the account Balance for the specified `owner`.",
+          "",
+          " Returns `0` if the account is non-existent."
+        ],
+        "label": "PSP22::balance_of",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 20
+        },
+        "selector": "0x6568382f"
+      },
+      {
+        "args": [
+          {
+            "label": "spender",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "ApproveInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "value",
+            "type": {
+              "displayName": [
+                "psp22_external",
+                "ApproveInput2"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Allows `spender` to withdraw from the caller's account multiple times, up to",
+          " the `value` amount.",
+          "",
+          " If this function is called again it overwrites the current allowance with `value`.",
+          "",
+          " An `Approval` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns `ZeroSenderAddress` error if sender's address is zero.",
+          "",
+          " Returns `ZeroRecipientAddress` error if recipient's address is zero."
+        ],
+        "label": "PSP22::approve",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 18
+        },
+        "selector": "0xb20f1bbd"
       },
       {
         "args": [],
@@ -619,7 +904,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 14
+          "type": 21
         },
         "selector": "0x3d261bd4"
       },
@@ -637,7 +922,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 14
+          "type": 21
         },
         "selector": "0x34205be5"
       },
@@ -655,7 +940,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 15
+          "type": 22
         },
         "selector": "0x7271b782"
       },
@@ -673,7 +958,7 @@ export const metadata = {
             "ink",
             "MessageResult"
           ],
-          "type": 16
+          "type": 23
         },
         "selector": "0xd123ce11"
       }
@@ -924,7 +1209,132 @@ export const metadata = {
                           }
                         }
                       },
-                      "name": "minter_address"
+                      "name": "owner_addresss"
+                    },
+                    {
+                      "layout": {
+                        "leaf": {
+                          "key": "0x00000000",
+                          "ty": 4
+                        }
+                      },
+                      "name": "is_sale"
+                    },
+                    {
+                      "layout": {
+                        "enum": {
+                          "dispatchKey": "0x00000000",
+                          "name": "Option",
+                          "variants": {
+                            "0": {
+                              "fields": [],
+                              "name": "None"
+                            },
+                            "1": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x00000000",
+                                      "ty": 0
+                                    }
+                                  },
+                                  "name": "0"
+                                }
+                              ],
+                              "name": "Some"
+                            }
+                          }
+                        }
+                      },
+                      "name": "sale_rate"
+                    },
+                    {
+                      "layout": {
+                        "enum": {
+                          "dispatchKey": "0x00000000",
+                          "name": "Option",
+                          "variants": {
+                            "0": {
+                              "fields": [],
+                              "name": "None"
+                            },
+                            "1": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x00000000",
+                                      "ty": 0
+                                    }
+                                  },
+                                  "name": "0"
+                                }
+                              ],
+                              "name": "Some"
+                            }
+                          }
+                        }
+                      },
+                      "name": "max_supply"
+                    },
+                    {
+                      "layout": {
+                        "enum": {
+                          "dispatchKey": "0x00000000",
+                          "name": "Option",
+                          "variants": {
+                            "0": {
+                              "fields": [],
+                              "name": "None"
+                            },
+                            "1": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x00000000",
+                                      "ty": 7
+                                    }
+                                  },
+                                  "name": "0"
+                                }
+                              ],
+                              "name": "Some"
+                            }
+                          }
+                        }
+                      },
+                      "name": "start_at"
+                    },
+                    {
+                      "layout": {
+                        "enum": {
+                          "dispatchKey": "0x00000000",
+                          "name": "Option",
+                          "variants": {
+                            "0": {
+                              "fields": [],
+                              "name": "None"
+                            },
+                            "1": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x00000000",
+                                      "ty": 7
+                                    }
+                                  },
+                                  "name": "0"
+                                }
+                              ],
+                              "name": "Some"
+                            }
+                          }
+                        }
+                      },
+                      "name": "end_at"
                     }
                   ],
                   "name": "EnabledFeatures"
@@ -1065,6 +1475,14 @@ export const metadata = {
       "id": 7,
       "type": {
         "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
           "variant": {
             "variants": [
               {
@@ -1095,7 +1513,7 @@ export const metadata = {
       }
     },
     {
-      "id": 8,
+      "id": 9,
       "type": {
         "def": {
           "variant": {
@@ -1112,7 +1530,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 9
+                    "type": 10
                   }
                 ],
                 "index": 1,
@@ -1128,7 +1546,7 @@ export const metadata = {
           },
           {
             "name": "E",
-            "type": 9
+            "type": 10
           }
         ],
         "path": [
@@ -1137,7 +1555,7 @@ export const metadata = {
       }
     },
     {
-      "id": 9,
+      "id": 10,
       "type": {
         "def": {
           "variant": {
@@ -1156,48 +1574,6 @@ export const metadata = {
       }
     },
     {
-      "id": 10,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 11
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 9
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 11
-          },
-          {
-            "name": "E",
-            "type": 9
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
       "id": 11,
       "type": {
         "def": {
@@ -1206,7 +1582,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 1
+                    "type": 12
                   }
                 ],
                 "index": 0,
@@ -1215,7 +1591,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 12
+                    "type": 10
                   }
                 ],
                 "index": 1,
@@ -1227,11 +1603,11 @@ export const metadata = {
         "params": [
           {
             "name": "T",
-            "type": 1
+            "type": 12
           },
           {
             "name": "E",
-            "type": 12
+            "type": 10
           }
         ],
         "path": [
@@ -1241,6 +1617,48 @@ export const metadata = {
     },
     {
       "id": 12,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 13,
       "type": {
         "def": {
           "variant": {
@@ -1294,48 +1712,6 @@ export const metadata = {
       }
     },
     {
-      "id": 13,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 0
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 9
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 0
-          },
-          {
-            "name": "E",
-            "type": 9
-          }
-        ],
-        "path": [
-          "Result"
-        ]
-      }
-    },
-    {
       "id": 14,
       "type": {
         "def": {
@@ -1344,7 +1720,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 7
+                    "type": 15
                   }
                 ],
                 "index": 0,
@@ -1353,7 +1729,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 9
+                    "type": 10
                   }
                 ],
                 "index": 1,
@@ -1365,11 +1741,11 @@ export const metadata = {
         "params": [
           {
             "name": "T",
-            "type": 7
+            "type": 15
           },
           {
             "name": "E",
-            "type": 9
+            "type": 10
           }
         ],
         "path": [
@@ -1386,7 +1762,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 3
+                    "type": 0
                   }
                 ],
                 "index": 0,
@@ -1395,7 +1771,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 9
+                    "type": 13
                   }
                 ],
                 "index": 1,
@@ -1407,11 +1783,11 @@ export const metadata = {
         "params": [
           {
             "name": "T",
-            "type": 3
+            "type": 0
           },
           {
             "name": "E",
-            "type": 9
+            "type": 13
           }
         ],
         "path": [
@@ -1428,6 +1804,300 @@ export const metadata = {
               {
                 "fields": [
                   {
+                    "type": 17
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 17
+          },
+          {
+            "name": "E",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 19
+          },
+          {
+            "name": "E",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 1
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 1
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          },
+          {
+            "name": "E",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          },
+          {
+            "name": "E",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 3
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 3
+          },
+          {
+            "name": "E",
+            "type": 10
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
                     "type": 4
                   }
                 ],
@@ -1437,7 +2107,7 @@ export const metadata = {
               {
                 "fields": [
                   {
-                    "type": 9
+                    "type": 10
                   }
                 ],
                 "index": 1,
@@ -1453,7 +2123,7 @@ export const metadata = {
           },
           {
             "name": "E",
-            "type": 9
+            "type": 10
           }
         ],
         "path": [
@@ -1462,7 +2132,7 @@ export const metadata = {
       }
     },
     {
-      "id": 17,
+      "id": 24,
       "type": {
         "def": {
           "composite": {
@@ -1482,15 +2152,7 @@ export const metadata = {
       }
     },
     {
-      "id": 18,
-      "type": {
-        "def": {
-          "primitive": "u64"
-        }
-      }
-    },
-    {
-      "id": 19,
+      "id": 25,
       "type": {
         "def": {
           "primitive": "u32"
@@ -1498,7 +2160,7 @@ export const metadata = {
       }
     },
     {
-      "id": 20,
+      "id": 26,
       "type": {
         "def": {
           "variant": {}
@@ -1541,6 +2203,38 @@ export interface ChainContext {
 export class Contract {
     constructor(private ctx: ChainContext, private address: string, private blockHash?: string) { }
 
+    get_is_sale(): Promise<Result<Result<bool, PSP22Error>, LangError>> {
+        return this.stateCall('0x8c66749f', [])
+    }
+
+    get_is_pausable(): Promise<Result<Result<bool, PSP22Error>, LangError>> {
+        return this.stateCall('0xc64ffeb2', [])
+    }
+
+    get_is_mintable(): Promise<Result<Result<bool, PSP22Error>, LangError>> {
+        return this.stateCall('0x61234c15', [])
+    }
+
+    get_is_burnable(): Promise<Result<Result<bool, PSP22Error>, LangError>> {
+        return this.stateCall('0xd0e5ffcd', [])
+    }
+
+    get_sale_rate(): Promise<Result<Result<bigint, PSP22Error>, LangError>> {
+        return this.stateCall('0xf14df3d6', [])
+    }
+
+    get_start_at(): Promise<Result<Result<Timestamp, PSP22Error>, LangError>> {
+        return this.stateCall('0x48b8cae5', [])
+    }
+
+    get_end_at(): Promise<Result<Result<Timestamp, PSP22Error>, LangError>> {
+        return this.stateCall('0x21ec4ab8', [])
+    }
+
+    get_max_supply(): Promise<Result<Result<bigint, PSP22Error>, LangError>> {
+        return this.stateCall('0x62032e0e', [])
+    }
+
     PSP22_total_supply(): Promise<Result<bigint, LangError>> {
         return this.stateCall('0x162df8c2', [])
     }
@@ -1578,9 +2272,67 @@ export class Contract {
     }
 }
 
-export type Event = never
+export type Event = Event_SetSaleOptions | Event_TokenBought
 
-export type Message = Message_change_state | Message_mint_to | Message_burn | Message_PSP22_increase_allowance | Message_PSP22_transfer | Message_PSP22_approve | Message_PSP22_total_supply | Message_PSP22_allowance | Message_PSP22_decrease_allowance | Message_PSP22_balance_of | Message_PSP22_transfer_from | Message_PSP22Metadata_token_name | Message_PSP22Metadata_token_symbol | Message_PSP22Metadata_token_decimals | Message_Pausable_paused
+export interface Event_SetSaleOptions {
+    __kind: 'SetSaleOptions'
+    saleRate: bigint
+    maxSupply: bigint
+    startAt: Timestamp
+    endAt: Timestamp
+}
+
+export interface Event_TokenBought {
+    __kind: 'TokenBought'
+    receiverAddress: Uint8Array
+    amount: bigint
+}
+
+export type Message = Message_get_is_sale | Message_get_is_pausable | Message_get_is_mintable | Message_get_is_burnable | Message_get_sale_rate | Message_get_start_at | Message_get_end_at | Message_get_max_supply | Message_set_sale_options | Message_buy | Message_change_state | Message_mint_to | Message_burn | Message_PSP22_transfer | Message_PSP22_total_supply | Message_PSP22_allowance | Message_PSP22_transfer_from | Message_PSP22_decrease_allowance | Message_PSP22_increase_allowance | Message_PSP22_balance_of | Message_PSP22_approve | Message_PSP22Metadata_token_name | Message_PSP22Metadata_token_symbol | Message_PSP22Metadata_token_decimals | Message_Pausable_paused
+
+export interface Message_get_is_sale {
+    __kind: 'get_is_sale'
+}
+
+export interface Message_get_is_pausable {
+    __kind: 'get_is_pausable'
+}
+
+export interface Message_get_is_mintable {
+    __kind: 'get_is_mintable'
+}
+
+export interface Message_get_is_burnable {
+    __kind: 'get_is_burnable'
+}
+
+export interface Message_get_sale_rate {
+    __kind: 'get_sale_rate'
+}
+
+export interface Message_get_start_at {
+    __kind: 'get_start_at'
+}
+
+export interface Message_get_end_at {
+    __kind: 'get_end_at'
+}
+
+export interface Message_get_max_supply {
+    __kind: 'get_max_supply'
+}
+
+export interface Message_set_sale_options {
+    __kind: 'set_sale_options'
+    saleRate: bigint
+    maxSupply: bigint
+    startAt: Timestamp
+    endAt: Timestamp
+}
+
+export interface Message_buy {
+    __kind: 'buy'
+}
 
 export interface Message_change_state {
     __kind: 'change_state'
@@ -1595,23 +2347,6 @@ export interface Message_mint_to {
 export interface Message_burn {
     __kind: 'burn'
     amount: bigint
-}
-
-/**
- *  Atomically increases the allowance granted to `spender` by the caller.
- * 
- *  An `Approval` event is emitted.
- * 
- *  # Errors
- * 
- *  Returns `ZeroSenderAddress` error if sender's address is zero.
- * 
- *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
- */
-export interface Message_PSP22_increase_allowance {
-    __kind: 'PSP22_increase_allowance'
-    spender: Uint8Array
-    deltaValue: bigint
 }
 
 /**
@@ -1637,26 +2372,6 @@ export interface Message_PSP22_transfer {
 }
 
 /**
- *  Allows `spender` to withdraw from the caller's account multiple times, up to
- *  the `value` amount.
- * 
- *  If this function is called again it overwrites the current allowance with `value`.
- * 
- *  An `Approval` event is emitted.
- * 
- *  # Errors
- * 
- *  Returns `ZeroSenderAddress` error if sender's address is zero.
- * 
- *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
- */
-export interface Message_PSP22_approve {
-    __kind: 'PSP22_approve'
-    spender: Uint8Array
-    value: bigint
-}
-
-/**
  *  Returns the total token supply.
  */
 export interface Message_PSP22_total_supply {
@@ -1672,36 +2387,6 @@ export interface Message_PSP22_allowance {
     __kind: 'PSP22_allowance'
     owner: Uint8Array
     spender: Uint8Array
-}
-
-/**
- *  Atomically decreases the allowance granted to `spender` by the caller.
- * 
- *  An `Approval` event is emitted.
- * 
- *  # Errors
- * 
- *  Returns `InsufficientAllowance` error if there are not enough tokens allowed
- *  by owner for `spender`.
- * 
- *  Returns `ZeroSenderAddress` error if sender's address is zero.
- * 
- *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
- */
-export interface Message_PSP22_decrease_allowance {
-    __kind: 'PSP22_decrease_allowance'
-    spender: Uint8Array
-    deltaValue: bigint
-}
-
-/**
- *  Returns the account Balance for the specified `owner`.
- * 
- *  Returns `0` if the account is non-existent.
- */
-export interface Message_PSP22_balance_of {
-    __kind: 'PSP22_balance_of'
-    owner: Uint8Array
 }
 
 /**
@@ -1731,6 +2416,73 @@ export interface Message_PSP22_transfer_from {
     to: Uint8Array
     value: bigint
     data: Uint8Array
+}
+
+/**
+ *  Atomically decreases the allowance granted to `spender` by the caller.
+ * 
+ *  An `Approval` event is emitted.
+ * 
+ *  # Errors
+ * 
+ *  Returns `InsufficientAllowance` error if there are not enough tokens allowed
+ *  by owner for `spender`.
+ * 
+ *  Returns `ZeroSenderAddress` error if sender's address is zero.
+ * 
+ *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
+ */
+export interface Message_PSP22_decrease_allowance {
+    __kind: 'PSP22_decrease_allowance'
+    spender: Uint8Array
+    deltaValue: bigint
+}
+
+/**
+ *  Atomically increases the allowance granted to `spender` by the caller.
+ * 
+ *  An `Approval` event is emitted.
+ * 
+ *  # Errors
+ * 
+ *  Returns `ZeroSenderAddress` error if sender's address is zero.
+ * 
+ *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
+ */
+export interface Message_PSP22_increase_allowance {
+    __kind: 'PSP22_increase_allowance'
+    spender: Uint8Array
+    deltaValue: bigint
+}
+
+/**
+ *  Returns the account Balance for the specified `owner`.
+ * 
+ *  Returns `0` if the account is non-existent.
+ */
+export interface Message_PSP22_balance_of {
+    __kind: 'PSP22_balance_of'
+    owner: Uint8Array
+}
+
+/**
+ *  Allows `spender` to withdraw from the caller's account multiple times, up to
+ *  the `value` amount.
+ * 
+ *  If this function is called again it overwrites the current allowance with `value`.
+ * 
+ *  An `Approval` event is emitted.
+ * 
+ *  # Errors
+ * 
+ *  Returns `ZeroSenderAddress` error if sender's address is zero.
+ * 
+ *  Returns `ZeroRecipientAddress` error if recipient's address is zero.
+ */
+export interface Message_PSP22_approve {
+    __kind: 'PSP22_approve'
+    spender: Uint8Array
+    value: bigint
 }
 
 /**
@@ -1765,13 +2517,44 @@ export type Constructor = Constructor_new
 
 export interface Constructor_new {
     __kind: 'new'
-    totalSupply: bigint
+    initialSupply: bigint
     name: (Uint8Array | undefined)
     symbol: (Uint8Array | undefined)
     decimals: u8
     isPausable: bool
     isMintable: bool
     isBurnable: bool
+    isSale: bool
+}
+
+export type bool = boolean
+
+export type PSP22Error = PSP22Error_Custom | PSP22Error_InsufficientBalance | PSP22Error_InsufficientAllowance | PSP22Error_ZeroRecipientAddress | PSP22Error_ZeroSenderAddress | PSP22Error_SafeTransferCheckFailed
+
+export interface PSP22Error_Custom {
+    __kind: 'Custom'
+    value: Uint8Array
+}
+
+export interface PSP22Error_InsufficientBalance {
+    __kind: 'InsufficientBalance'
+}
+
+export interface PSP22Error_InsufficientAllowance {
+    __kind: 'InsufficientAllowance'
+}
+
+export interface PSP22Error_ZeroRecipientAddress {
+    __kind: 'ZeroRecipientAddress'
+}
+
+export interface PSP22Error_ZeroSenderAddress {
+    __kind: 'ZeroSenderAddress'
+}
+
+export interface PSP22Error_SafeTransferCheckFailed {
+    __kind: 'SafeTransferCheckFailed'
+    value: Uint8Array
 }
 
 export type LangError = LangError_CouldNotReadInput
@@ -1780,8 +2563,8 @@ export interface LangError_CouldNotReadInput {
     __kind: 'CouldNotReadInput'
 }
 
-export type u8 = number
+export type Timestamp = bigint
 
-export type bool = boolean
+export type u8 = number
 
 export type Result<T, E> = {__kind: 'Ok', value: T} | {__kind: 'Err', value: E}
