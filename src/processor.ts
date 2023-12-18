@@ -77,9 +77,9 @@ const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
             },
             {
               $set: {
-                max_supply: Decimal128.fromString(event.maxSupply.toString()),
-                bought_supply: Decimal128.fromString("0"),
-                sale_rate: Decimal128.fromString(event.saleRate.toString()),
+                max_supply: event.maxSupply.toString(),
+                bought_supply: "0",
+                sale_rate: event.saleRate.toString(),
                 start_at: event.startAt,
                 end_at: event.endAt,
                 updated_at: new Date().getTime(),
@@ -97,7 +97,7 @@ const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
 
           await db.collection("coin_sales").insertOne({
             contract_address: contractAddress,
-            amount: Decimal128.fromString(event.amount.toString()),
+            amount: event.amount.toString(),
             receiver_address: receiverAddress,
             updated_at: updatedAt,
           });
@@ -108,7 +108,7 @@ const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
             },
             {
               $inc: {
-                bought_supply: Decimal128.fromString(event.amount.toString()),
+                bought_supply: event.amount.toString(),
               },
             }
           );
@@ -156,9 +156,7 @@ const processBlocks = async (ctx: Ctx, db: Db, analyticDbPool: Pool) => {
                 name: new TextDecoder().decode(params.name),
                 symbol: new TextDecoder().decode(params.symbol),
                 decimals: params.decimals,
-                total_supply: Decimal128.fromString(
-                  params.initialSupply.toString()
-                ),
+                total_supply: params.initialSupply.toString(),
                 is_pausable: params.isPausable,
                 is_mintable: params.isMintable,
                 is_burnable: params.isBurnable,
